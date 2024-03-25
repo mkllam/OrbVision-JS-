@@ -1,0 +1,11 @@
+**/logs
+*.log
+pyvenv.cfg
+**/Scripts
+
+**/Lib
+
+# Files are too big for git
+**/Logo
+**/Scene
+**/Output
