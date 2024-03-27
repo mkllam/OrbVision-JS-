@@ -44,10 +44,12 @@ var targetLayer = 'Design Here';
 // Select Scene
 var activeDoc = app.activeDocument;
 
-// Find list of logos
+// Find list of logos and psds
 var workingPath  = app.activeDocument.path;
 var psdList = Folder(workingPath).getFiles(/.psd$/i);
 var logoList = Folder(workingPath+'/Logo').getFiles(/.png$/i);
+
+// Copied some default jpeg options.  more details https://theiviaxx.github.io/photoshop-docs/Photoshop/JPEGSaveOptions.html
 var jpegOptions = new JPEGSaveOptions();
 jpegOptions.quality = 12;
 jpegOptions.embedColorProfile = true;
