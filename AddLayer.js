@@ -45,10 +45,18 @@ var activeDoc = app.activeDocument;
 // Find list of logos
 var workingPath  = app.activeDocument.path;
 var logoList = Folder(workingPath+'/Logo').getFiles(/.png$/i);
-var imageFile = new File(logoList[0]);
+var jpegOptions = new JPEGSaveOptions();
+jpegOptions.quality = 12;
+jpegOptions.embedColorProfile = true;
+jpegOptions.matte = MatteType.NONE;
+jpegOptions.scans = 3;
+
 //test function
-if (imageFile.exists) {
-    goThroughLayers(activeDoc);
-    var basename = 'testingOut';
-    activeDoc.saveAs((new File(workingPath+"/Output/"+basename+".jpg")),jpegOptions,true);
+for(var i=0; i<logoList.length;i++){
+    var imageFile = new File(logoList[i]);
+    if (imageFile.exists) {
+        goThroughLayers(activeDoc);
+        var basename = app.activeDocument.name.split('.')[0]+'NewScene';
+        activeDoc.saveAs((new File(workingPath+"/Output/"+basename+i+".jpg")),jpegOptions,true);
+    }
 }
