@@ -1,3 +1,5 @@
+// Start the script from the first psd doc open in photoshop
+
 // Recursive function to iterate through layers of a psd 
 // https://community.adobe.com/t5/photoshop-ecosystem-discussions/photoshop-script-iterating-through-all-layers-and-groups-to-export-tagged-layers-in-javascript/m-p/10853278#M297061
 function goThroughLayers(parentLayer){
@@ -44,6 +46,7 @@ var activeDoc = app.activeDocument;
 
 // Find list of logos
 var workingPath  = app.activeDocument.path;
+var psdList = Folder(workingPath).getFiles(/.psd$/i);
 var logoList = Folder(workingPath+'/Logo').getFiles(/.png$/i);
 var jpegOptions = new JPEGSaveOptions();
 jpegOptions.quality = 12;
@@ -51,12 +54,19 @@ jpegOptions.embedColorProfile = true;
 jpegOptions.matte = MatteType.NONE;
 jpegOptions.scans = 3;
 
-//test function
-for(var i=0; i<logoList.length;i++){
-    var imageFile = new File(logoList[i]);
-    if (imageFile.exists) {
-        goThroughLayers(activeDoc);
-        var basename = app.activeDocument.name.split('.')[0]+'NewScene';
-        activeDoc.saveAs((new File(workingPath+"/Output/"+basename+i+".jpg")),jpegOptions,true);
+//main function
+for(var j=0; j<psdList.length;j++){
+    for(var i=0; i<logoList.length;i++){
+        var imageFile = new File(logoList[i]);
+        if (imageFile.exists) {
+            goThroughLayers(activeDoc);
+            var basename = app.activeDocument.name.split('.')[0]+'NewScene';
+            activeDoc.saveAs((new File(workingPath+"/Output/"+basename+i+".jpg")),jpegOptions,true);
+        }
+    }
+    app.activeDocument.close(SaveOptions.DONOTSAVECHANGES);
+    if(j+1 < psdList.length){
+        app.open(new File(psdList[j+1]));
+        activeDoc = app.activeDocument;
     }
 }
