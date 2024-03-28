@@ -23,8 +23,13 @@ function removeLayers(parentLayer){
         if(curLayer.typename =='LayerSet'){removeLayers (curLayer)}
         else{
             // remove layer and decrement index
-            curLayer.remove();
-            i--;
+            try {
+                curLayer.remove();
+                i--;
+            } catch(error) {
+                curLayer.visible = false;
+                return;
+            } 
         }//end else
     }//end loop
 }//end function
@@ -71,6 +76,9 @@ jpegOptions.embedColorProfile = true;
 jpegOptions.matte = MatteType.NONE;
 jpegOptions.scans = 3;
 
+// Turn off dialogs
+displayDialogs = DialogModes.NO;
+
 //main function
 for(var j=0; j<psdList.length;j++){
     for(var i=0; i<logoList.length;i++){
@@ -87,3 +95,5 @@ for(var j=0; j<psdList.length;j++){
         activeDoc = app.activeDocument;
     }
 }
+// Turn dialogs back on
+displayDialogs = DialogModes.YES;
