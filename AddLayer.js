@@ -23,10 +23,12 @@ function removeLayers(parentLayer){
         if(curLayer.typename =='LayerSet'){removeLayers (curLayer)}
         else{
             // remove layer and decrement index
+            curLayer.allLocked = false;
             try {
                 curLayer.remove();
                 i--;
             } catch(error) {
+                activeDocument.activeLayer.isBackgroundLayer = false;
                 curLayer.visible = false;
                 return;
             } 
@@ -96,4 +98,4 @@ for(var j=0; j<psdList.length;j++){
     }
 }
 // Turn dialogs back on
-displayDialogs = DialogModes.YES;
+displayDialogs = DialogModes.ALL;
