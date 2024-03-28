@@ -15,13 +15,28 @@ function goThroughLayers(parentLayer){
     }//end loop
 }//end function
 
+//removes all layers in active document
+function removeLayers(parentLayer){
+    for(var i=0;i<parentLayer.layers.length;i++){
+        curLayer = parentLayer.layers[i];
+        app.activeDocument.activeLayer = curLayer;
+        if(curLayer.typename =='LayerSet'){removeLayers (curLayer)}
+        else{
+            // remove layer and decrement index
+            curLayer.remove();
+            i--;
+        }//end else
+    }//end loop
+}//end function
+
 ////// replace contents //////  
 function replaceContents (newFile) {  
     var idplacedLayerEditContents = stringIDToTypeID( "placedLayerEditContents" );
     var desc3 = new ActionDescriptor(); 
     executeAction( idplacedLayerEditContents, desc3, DialogModes.NO );
+    removeLayers(app.activeDocument);
     placeFile(imageFile);
-    app.activeDocument.artLayers[1].remove();
+    //app.activeDocument.artLayers[1].remove();
     app.activeDocument.close(SaveOptions.SAVECHANGES);
     return
 };
@@ -39,7 +54,7 @@ function placeFile(placeFile) {
 }
 
 // Layer to replace with logo
-var targetLayer = 'Design Here';
+var targetLayer = 'YLP';
 
 // Select Scene
 var activeDoc = app.activeDocument;
