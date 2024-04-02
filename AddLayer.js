@@ -84,16 +84,20 @@ displayDialogs = DialogModes.NO;
 //main function
 for(var j=0; j<psdList.length;j++){
     for(var i=0; i<logoList.length;i++){
-        var basename = app.activeDocument.name.split('.')[0];
+        var imageFile = new File(logoList[i]);
+
+        // Name of the logo
+        var basename = imageFile.name.split('.')[0];
+
         // Create folder for scene output
         var outputFolder = Folder(workingPath+"/Output/"+basename);
         if(!outputFolder.exists) outputFolder.create();
+
         // Loop through all logos and apply them to scene
-        var imageFile = new File(logoList[i]);
         if (imageFile.exists) {
             goThroughLayers(activeDoc);
             // Save File
-            activeDoc.saveAs((new File(workingPath+"/Output/"+basename+"/NewScene"+i+".jpg")),jpegOptions,true);
+            activeDoc.saveAs((new File(workingPath+"/Output/"+basename+"/NewScene"+j+".jpg")),jpegOptions,true);
         }
     }
     app.activeDocument.close(SaveOptions.DONOTSAVECHANGES);
